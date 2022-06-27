@@ -74,8 +74,8 @@ class AddEditNoteActivity : AppCompatActivity() {
     override fun onBackPressed() {
         val builder = AlertDialog.Builder(this)
         val noteType = intent.getStringExtra("noteType")
-        builder.setTitle("Save Note").setMessage("Do You Want To Save Note").setIcon(R.drawable.ic_save_icon)
 
+        builder.setTitle("Save Note").setMessage("Do You Want To Save Note").setIcon(R.drawable.ic_save_icon)
         builder.setPositiveButton("Yes"){dialogInterface, which ->
             val noteTitle = noteTitleEdt.text.toString()
             val noteDescription = noteEdt.text.toString()
