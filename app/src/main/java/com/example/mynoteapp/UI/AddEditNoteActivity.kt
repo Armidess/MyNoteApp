@@ -6,15 +6,18 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import com.example.mynoteapp.DB.Note
 import com.example.mynoteapp.R
 import com.example.mynoteapp.ViewModel.NoteViewModal
+import com.example.mynoteapp.databinding.ActivityAddEditNoteBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
 class AddEditNoteActivity : AppCompatActivity() {
 
+    lateinit var binding : ActivityAddEditNoteBinding
     lateinit var noteTitleEdt: EditText
     lateinit var noteEdt: EditText
     lateinit var saveBtn: Button
@@ -23,7 +26,8 @@ class AddEditNoteActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_edit_note)
+        binding = ActivityAddEditNoteBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         viewModal = ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory.getInstance(application)).get(NoteViewModal::class.java)
         noteTitleEdt = findViewById(R.id.idEdtNoteName)
@@ -66,5 +70,18 @@ class AddEditNoteActivity : AppCompatActivity() {
             this.finish()
         }
 
+    }
+    override fun onBackPressed() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Save Note").setMessage("Do You Want To Save Note").setIcon(R.drawable.ic_save_icon)
+        builder.setPositiveButton("Yes"){dialogInterface, which ->
+            super.onBackPressed()
+        }
+        builder.setNegativeButton("NO"){dialogInterface, which ->
+
+        }
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.setCancelable(false)
+        alertDialog.show()
     }
 }

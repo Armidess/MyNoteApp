@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -65,5 +66,22 @@ class MainActivity : AppCompatActivity(), NoteClickInterface, NoteClickDeleteInt
         intent.putExtra("noteId", note.id)
         startActivity(intent)
         this.finish()
+    }
+
+    override fun onBackPressed() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Exit Application").setMessage("Do You Want To Exit").setIcon(R.drawable.dialog_warning)
+        builder.setPositiveButton("Yes"){dialogInterface, which ->
+            super.onBackPressed()
+        }
+        builder.setNegativeButton("NO"){dialogInterface, which ->
+
+        }
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.setCancelable(false)
+        alertDialog.show()
+
+
+
     }
 }
