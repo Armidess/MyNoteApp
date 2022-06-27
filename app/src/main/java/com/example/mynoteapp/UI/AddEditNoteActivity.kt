@@ -73,12 +73,37 @@ class AddEditNoteActivity : AppCompatActivity() {
     }
     override fun onBackPressed() {
         val builder = AlertDialog.Builder(this)
+        val noteType = intent.getStringExtra("noteType")
         builder.setTitle("Save Note").setMessage("Do You Want To Save Note").setIcon(R.drawable.ic_save_icon)
+
         builder.setPositiveButton("Yes"){dialogInterface, which ->
-            super.onBackPressed()
+            val noteTitle = noteTitleEdt.text.toString()
+            val noteDescription = noteEdt.text.toString()
+            if (noteType.equals("Edit")) {
+                if (noteTitle.isNotEmpty() && noteDescription.isNotEmpty()) {
+                    val sdf = SimpleDateFormat("dd MMM, yyyy - HH:mm")
+                    val currentDateAndTime: String = sdf.format(Date())
+                    val updatedNote = Note(noteTitle, noteDescription, currentDateAndTime)
+                    updatedNote.id = noteID
+                    viewModal.updateNote(updatedNote)
+                    Toast.makeText(this, "Note Updated..", Toast.LENGTH_LONG).show()
+                }
+            } else {
+                if (noteTitle.isNotEmpty() && noteDescription.isNotEmpty()) {
+                    val sdf = SimpleDateFormat("dd MMM, yyyy - HH:mm")
+                    val currentDateAndTime: String = sdf.format(Date())
+                    viewModal.addNote(Note(noteTitle, noteDescription, currentDateAndTime))
+                    Toast.makeText(this, "$noteTitle Added", Toast.LENGTH_LONG).show()
+                }
+            }
+            startActivity(Intent(applicationContext, MainActivity::class.java))
+            this.finish()
         }
         builder.setNegativeButton("NO"){dialogInterface, which ->
 
+        }
+        builder.setNeutralButton("Discard Note"){dialogInterface, which ->
+            startActivity(Intent(this,MainActivity::class.java))
         }
         val alertDialog: AlertDialog = builder.create()
         alertDialog.setCancelable(false)
